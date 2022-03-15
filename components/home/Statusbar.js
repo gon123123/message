@@ -1,6 +1,6 @@
 import { Text, StyleSheet, View, Image } from 'react-native'
 import React from 'react';
-import tuan from '../assets/tuan.jpg'
+import tuan from '../../assets/tuan.jpg'
 import { Ionicons } from '@expo/vector-icons';
 
 export default function Statusbar(props) {

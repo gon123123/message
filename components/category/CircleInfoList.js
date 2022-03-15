@@ -1,6 +1,6 @@
 import { Text, StyleSheet, View, Image, TouchableOpacity } from 'react-native'
 import React, { Component } from 'react'
-import tuan from '../assets/tuan.jpg';
+import tuan from '../../assets/tuan.jpg';
 
 export default function CircleInfoList() {
     return (

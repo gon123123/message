@@ -1,30 +1,14 @@
-import { Text, StyleSheet, View, SafeAreaView, TextInput, ScrollView, StatusBar } from 'react-native'
-import React from 'react'
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Statusbars from '../components/Statusbar';
-import Search from '../components/Search';
-import CircleInfoList from '../components/CircleInfoList';
+import { Text, StyleSheet, View } from 'react-native'
+import React, { Component } from 'react'
 
-export default function Home() {
-    const Stack = createNativeStackNavigator();
-    return (
-        <SafeAreaView style={{ backgroundColor: '#ffffff' }}>
-            <StatusBar
-                backgroundColor="#61dafb"
-            />
-            <View style={styles.container}>
-                <Statusbars name='Message' icon='rocket-outline'></Statusbars>
-                <ScrollView>
-                    <CircleInfoList />
-                </ScrollView>
+export default class Message extends Component {
+    render() {
+        return (
+            <View>
+                <Text>Message</Text>
             </View>
-        </SafeAreaView>
-    )
+        )
+    }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#FFFFFF',
-    }
-})
+const styles = StyleSheet.create({})

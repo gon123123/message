@@ -1,6 +1,6 @@
 import { Text, StyleSheet, View, Image, ScrollView } from 'react-native'
 import React from 'react'
-import tuan from '../assets/tuan.jpg';
+import tuan from '../../assets/tuan.jpg';
 
 export default function CircleInfo() {
     return (

@@ -92,5 +92,5 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: -30,
         zIndex: 100,
-    }
+    },
 })

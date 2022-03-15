@@ -15,9 +15,12 @@ function ChatStackScreen() {
     return (
         <ChatStack.Navigator
             screenOptions={{ headerShown: false }}
+            initialRouteName="StackHome"
         >
             <ChatStack.Screen name="StackHome" component={Home} />
             <ChatStack.Screen name="Chat" component={Chat} />
+            <ChatStack.Screen name="Message" component={Message} />
+            <ChatStack.Screen name="Phonebook" component={Phonebook} />
         </ChatStack.Navigator>
     )
 }
@@ -26,46 +29,15 @@ export default function App() {
     return (
         <>
             <NavigationContainer>
-                <Tab.Navigator
-                    screenOptions={({ route }) => ({
-                        tabBarIcon: ({ focused, color, size }) => {
-                            let iconName;
-                            if (route.name === 'Home') {
-                                iconName = focused
-                                    ? 'home'
-                                    : 'home-outline';
-                            } else if (route.name === 'Phonebook') {
-                                iconName = focused ? 'ios-book' : 'ios-book-outline';
-                            }
-                            // You can return any component that you like here!
-                            return <Ionicons name={iconName} size={size} color={color} />;
-                        },
-                        tabBarActiveTintColor: 'tomato',
-                        tabBarInactiveTintColor: 'tomato',
-                    })}
+                <ChatStack.Navigator
+                    screenOptions={{ headerShown: false }}
+                    initialRouteName="Home"
                 >
-                    <Tab.Screen options={{
-                        title: 'Home',
-                        headerStyle: {
-                            // backgroundColor: 'tomato'
-                            // color: 'tomato'
-                        },
-                        headerTitleStyle: {
-                            color: 'tomato'
-                        },
-                        headerShown: false,
-                        tabBarStyle: { 
-                            // display: 'none'
-                            // backgroundColor: '',
-                            // zIndex: 
-                        }
-                    }} name="Home" component={ChatStackScreen} />
-                    <Tab.Screen
-                        options={{
-                            headerShown: false,
-                        }}
-                        name="Phonebook" component={Phonebook} />
-                </Tab.Navigator>
+                    <ChatStack.Screen name="Home" component={Home} />
+                    <ChatStack.Screen name="Chat" component={Chat} />
+                    <ChatStack.Screen name="Message" component={Message} />
+                    <ChatStack.Screen name="Phonebook" component={Phonebook} />
+                </ChatStack.Navigator>
             </NavigationContainer>
         </>
     );

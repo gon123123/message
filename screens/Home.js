@@ -5,6 +5,7 @@ import Search from '../components/home/Search';
 import CircleInfo from '../components/home/CircleInfo';
 import tuan from '../assets/tuan.jpg';
 import { Ionicons } from '@expo/vector-icons';
+import BottomTab from '../components/BottomTab'
 
 export default function Home({ navigation, route }) {
     const [status, setStatus] = useState(true);
@@ -41,7 +42,137 @@ export default function Home({ navigation, route }) {
                             </View>
                         </TouchableOpacity>
                         {/* end Component BlockMessage */}
+                        {/* start Component BlockMessage */}
+                        <TouchableOpacity style={styles.block}
+                            onPress={() => {
+                                navigation.navigate('Chat');
+                                setStatus(!status);
+                            }}
+                        >
+                            <Image source={tuan} style={styles.blockLeft} />
+                            <View style={styles.status}></View>
+                            <View style={styles.blockCenter}>
+                                <Text style={styles.blockTitle}>Minh Tuan</Text>
+                                <View style={styles.message}>
+                                    <Text style={styles.messInfo} numberOfLines={1} ellipsizeMode='tail' >Huy: efggfeuygugafyefawgheuifhaihfiug</Text>
+                                    <Text style={styles.messInfo}>13:30</Text>
+                                </View>
+                            </View>
+                            <View style={styles.blockRight}>
+                                <Ionicons name='ios-notifications-off' size={18} color='#B1B1B2' style={{ transform: [{ scaleX: -1 }] }} />
+                                {(status) && <View style={styles.blockStatusRead}></View>}
+                            </View>
+                        </TouchableOpacity>
+                        {/* end Component BlockMessage */}
+                        {/* start Component BlockMessage */}
+                        <TouchableOpacity style={styles.block}
+                            onPress={() => {
+                                navigation.navigate('Chat');
+                                setStatus(!status);
+                            }}
+                        >
+                            <Image source={tuan} style={styles.blockLeft} />
+                            <View style={styles.status}></View>
+                            <View style={styles.blockCenter}>
+                                <Text style={styles.blockTitle}>Minh Tuan</Text>
+                                <View style={styles.message}>
+                                    <Text style={styles.messInfo} numberOfLines={1} ellipsizeMode='tail' >Huy: efggfeuygugafyefawgheuifhaihfiug</Text>
+                                    <Text style={styles.messInfo}>13:30</Text>
+                                </View>
+                            </View>
+                            <View style={styles.blockRight}>
+                                <Ionicons name='ios-notifications-off' size={18} color='#B1B1B2' style={{ transform: [{ scaleX: -1 }] }} />
+                                {(status) && <View style={styles.blockStatusRead}></View>}
+                            </View>
+                        </TouchableOpacity>
+                        {/* end Component BlockMessage */}
+                        {/* start Component BlockMessage */}
+                        <TouchableOpacity style={styles.block}
+                            onPress={() => {
+                                navigation.navigate('Chat');
+                                setStatus(!status);
+                            }}
+                        >
+                            <Image source={tuan} style={styles.blockLeft} />
+                            <View style={styles.status}></View>
+                            <View style={styles.blockCenter}>
+                                <Text style={styles.blockTitle}>Minh Tuan</Text>
+                                <View style={styles.message}>
+                                    <Text style={styles.messInfo} numberOfLines={1} ellipsizeMode='tail' >Huy: efggfeuygugafyefawgheuifhaihfiug</Text>
+                                    <Text style={styles.messInfo}>13:30</Text>
+                                </View>
+                            </View>
+                            <View style={styles.blockRight}>
+                                <Ionicons name='ios-notifications-off' size={18} color='#B1B1B2' style={{ transform: [{ scaleX: -1 }] }} />
+                                {(status) && <View style={styles.blockStatusRead}></View>}
+                            </View>
+                        </TouchableOpacity>
+                        {/* end Component BlockMessage */}
+                        {/* start Component BlockMessage */}
+                        <TouchableOpacity style={styles.block}
+                            onPress={() => {
+                                navigation.navigate('Chat');
+                                setStatus(!status);
+                            }}
+                        >
+                            <Image source={tuan} style={styles.blockLeft} />
+                            <View style={styles.status}></View>
+                            <View style={styles.blockCenter}>
+                                <Text style={styles.blockTitle}>Minh Tuan</Text>
+                                <View style={styles.message}>
+                                    <Text style={styles.messInfo} numberOfLines={1} ellipsizeMode='tail' >Huy: efggfeuygugafyefawgheuifhaihfiug</Text>
+                                    <Text style={styles.messInfo}>13:30</Text>
+                                </View>
+                            </View>
+                            <View style={styles.blockRight}>
+                                <Ionicons name='ios-notifications-off' size={18} color='#B1B1B2' style={{ transform: [{ scaleX: -1 }] }} />
+                                {(status) && <View style={styles.blockStatusRead}></View>}
+                            </View>
+                        </TouchableOpacity>
+                        {/* end Component BlockMessage */}
+                        {/* start Component BlockMessage */}
+                        <TouchableOpacity style={styles.block}
+                            onPress={() => {
+                                navigation.navigate('Chat');
+                                setStatus(!status);
+                            }}
+                        >
+                            <Image source={tuan} style={styles.blockLeft} />
+                            <View style={styles.status}></View>
+                            <View style={styles.blockCenter}>
+                                <Text style={styles.blockTitle}>Minh Tuan</Text>
+                                <View style={styles.message}>
+                                    <Text style={styles.messInfo} numberOfLines={1} ellipsizeMode='tail' >Huy: efggfeuygugafyefawgheuifhaihfiug</Text>
+                                    <Text style={styles.messInfo}>13:30</Text>
+                                </View>
+                            </View>
+                            <View style={styles.blockRight}>
+                                <Ionicons name='ios-notifications-off' size={18} color='#B1B1B2' style={{ transform: [{ scaleX: -1 }] }} />
+                                {(status) && <View style={styles.blockStatusRead}></View>}
+                            </View>
+                        </TouchableOpacity>
+                        {/* end Component BlockMessage */}
                     </ScrollView>
+                    {/* START Bottom tabs */}
+                    <View style={styles.BottomTabContainer}>
+                        <TouchableOpacity style={styles.BottomTabItem}
+                            onPress={() => (
+                                navigation.navigate('Home')
+                            )}
+                        >
+                            <Ionicons name='home' size={24} color="tomato" />
+                            <Text style={styles.BottomTabTitle}>Home</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.BottomTabItem}
+                            onPress={() => (
+                                navigation.navigate('Phonebook')
+                            )}
+                        >
+                            <Ionicons name='ios-book-outline' size={24} color="tomato" />
+                            <Text style={styles.BottomTabTitle}>PhoneBook</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {/* End Bottom tabs */}
                 </View>
             </SafeAreaView>
         </>
@@ -50,6 +181,7 @@ export default function Home({ navigation, route }) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#FFFFFF',
+        height: '100%',
     },
     block: {
         // backgroundColor: 'red',
@@ -108,4 +240,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#0C65F8',
         borderRadius: 13 / 2,
     },
+    // bottom tabs 
+    BottomTabContainer: {
+        width: '100%',
+        height: 48.5,
+        position: 'absolute',
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+        backgroundColor: 'rgba(255, 255, 255,0.99)',
+    },
+    BottomTabItem: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    BottomTabTitle: {
+        fontSize: 11,
+        fontWeight: '500',
+        color: 'tomato'
+    }
 })

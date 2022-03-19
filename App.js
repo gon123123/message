@@ -9,30 +9,23 @@ import Home from './screens/Home';
 import Phonebook from './screens/Phonebook';
 import Message from './screens/Message';
 import Chat from './screens/Chat';
+import Login from './screens/Login';
+import Register from './screens/Register';
+import Loading from './screens/Loading';
 
 const ChatStack = createNativeStackNavigator();
-function ChatStackScreen() {
-    return (
-        <ChatStack.Navigator
-            screenOptions={{ headerShown: false }}
-            initialRouteName="StackHome"
-        >
-            <ChatStack.Screen name="StackHome" component={Home} />
-            <ChatStack.Screen name="Chat" component={Chat} />
-            <ChatStack.Screen name="Message" component={Message} />
-            <ChatStack.Screen name="Phonebook" component={Phonebook} />
-        </ChatStack.Navigator>
-    )
-}
-const Tab = createBottomTabNavigator();
+
 export default function App() {
     return (
         <>
             <NavigationContainer>
                 <ChatStack.Navigator
                     screenOptions={{ headerShown: false }}
-                    initialRouteName="Home"
+                    initialRouteName="Loading"
                 >
+                    <ChatStack.Screen name="Loading" component={Loading} />
+                    <ChatStack.Screen name="Login" component={Login} />
+                    <ChatStack.Screen name="Register" component={Register} />
                     <ChatStack.Screen name="Home" component={Home} />
                     <ChatStack.Screen name="Chat" component={Chat} />
                     <ChatStack.Screen name="Message" component={Message} />

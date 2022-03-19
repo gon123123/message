@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, ImageBackground, StatusBar, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View, SafeAreaView, ImageBackground, StatusBar, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import firebase, { initializeApp } from "firebase/app";
@@ -9,9 +9,18 @@ import "firebase/functions";
 import "firebase/storage";
 
 export default function Login({ navigation }) {
-    // const []
+    const [visibleLoading, setVisibleLoading] = useState(['light-content', true]);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [data, setData] = useState([]);
+    const [error, setError] = useState({
+        email: '',
+        password: '',
+    })
 
     useEffect(() => {
+        // sau 3 giây thì tắt loading 
+        setTimeout(function () { setVisibleLoading(['dark-content', false]) }, 5000);
         const firebaseConfig = {
             apiKey: "AIzaSyBqD1nzf3oqE8MyEmdQ7mm6rmDD9TpQglg",
             authDomain: "skyteam-chat.firebaseapp.com",
@@ -27,7 +36,7 @@ export default function Login({ navigation }) {
             firebase.initializeApp(firebaseConfig);
             // const analytics = getAnalytics(app);
             console.log('ket noi thanh cong');
-            // getDatabase();
+            getDatabase();
         }
     }, []);
     function addDatabase(id, name, address) {
@@ -66,39 +75,82 @@ export default function Login({ navigation }) {
                 array.push({
                     id: item.key,
                     name: childData.Name,
-                    address: childData.address
+                    email: childData.email,
+                    password: childData.password,
                 });
             });
             setData(array);
         });
     }
+    function kiemTraTaiKhoan(email, password) {
+        var arrayErrors = {
+            email: '',
+            password: '',
+        }
+        if (email == '' || password == '') {
+            if (email == '') {
+                arrayErrors.email = '* cannot be left blank';
+            }
+            if (password == '') {
+                arrayErrors.password = '* cannot be left blank';
+            }
+            setError(arrayErrors);
+        } else {
+            if (data != []) {
+                var emailDatabase = false;  // kiểm tra tài khoản tồn tại không , mặc định không
+                for (let value of data) {
+                    if (value.email == email && value.password == password) {
+                        emailDatabase = true;
+                        break;
+                    }
+                }
+                if (emailDatabase == true) {
+                    alert('login success');
+                } else {
+                    alert('login fail');
+                }
+            } else {
+                arrayErrors.email = '* Account does not exist';
+                setError(arrayErrors);
+            }
+        }
+    }
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
-
             <View style={styles.container}>
+                {(visibleLoading[1]) && <View style={styles.loading}>
+                    <Text style={styles.loadingText}>SKY TEAM</Text>
+                    <ActivityIndicator size='large' color='white' />
+                </View>}
                 <StatusBar barStyle="dark-content"></StatusBar>
                 <View style={styles.boxLogin}>
                     <Text style={styles.Title}>Log in</Text>
                     <>
                         <View style={styles.boxFrom}>
                             <View style={styles.groupText}>
-                                <Text style={styles.label}>Email or SDT</Text>
-                                <TextInput style={styles.textInput} placeholder='nhập email hoặc số điện thoại..' />
-                                <Text style={styles.textError}>* khong duoc dai hon 40 ky tu</Text>
+                                <Text style={styles.label}>Email</Text>
+                                <TextInput style={styles.textInput} placeholder='email..'
+                                    onChangeText={(text) => setEmail(text.trim())}
+                                    value={email}
+                                />
+                                <Text style={styles.textError}>{error.email}</Text>
                             </View>
                         </View>
                     </>
                     <>
                         <View style={styles.boxFrom}>
                             <View style={styles.groupText}>
-                                <Text style={styles.label}>Mật Khẩu</Text>
-                                <TextInput style={styles.textInput} placeholder='nhap mật khẩu...' />
-                                <Text style={styles.textError}>* khong duoc dai hon 40 ky tu</Text>
+                                <Text style={styles.label}>Password</Text>
+                                <TextInput style={styles.textInput} placeholder='password...'
+                                    onChangeText={(text) => setPassword(text.trim())}
+                                    value={password}
+                                />
+                                <Text style={styles.textError}>{error.password}</Text>
                             </View>
                         </View>
                     </>
-                    <TouchableOpacity style={styles.buttonLogin}>
-                        <Text style={styles.textButton}>Đăng Nhập</Text>
+                    <TouchableOpacity style={styles.buttonLogin} onPress={() => kiemTraTaiKhoan(email, password)}>
+                        <Text style={styles.textButton}>Sing In</Text>
                     </TouchableOpacity>
                     <View style={styles.Or}>
                         <Text style={styles.textOne}></Text>
@@ -116,7 +168,7 @@ export default function Login({ navigation }) {
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity style={styles.register} onPress={() => navigation.navigate('Register')}>
-                        <Text style={styles.textRegister}>Bạn chưa có tải khoản ? Đăng Ký</Text>
+                        <Text style={styles.textRegister}>Do not have an account ? Register</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -124,6 +176,24 @@ export default function Login({ navigation }) {
     )
 }
 const styles = StyleSheet.create({
+    loading: {
+        backgroundColor: 'tomato',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        zIndex: 1,
+    },
+    loadingText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 25,
+        marginBottom: 15,
+        textShadowColor: '#FFFFFF',
+        textShadowOffset: { width: 2.5, height: 1.7 },
+        textShadowRadius: 1,
+    },
     container: {
         height: '100%',
         justifyContent: 'center',

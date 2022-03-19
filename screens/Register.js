@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, SafeAreaView, ImageBackground, StatusBar, TextI
 import React, { useState, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import firebase, { initializeApp } from "firebase/app";
-import auth from "firebase/auth";
+import "firebase/auth";
 import "firebase/database";
 import "firebase/firestore";
 import "firebase/functions";
@@ -13,6 +13,12 @@ export default function Register({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCF, setPasswordCF] = useState('');
+    const [data, setData] = useState([]);
+    const [error, setError] = useState({
+        name: '',
+        email: '',
+        password: '',
+    });
     useEffect(() => {
         const firebaseConfig = {
             apiKey: "AIzaSyBqD1nzf3oqE8MyEmdQ7mm6rmDD9TpQglg",
@@ -29,22 +35,79 @@ export default function Register({ navigation }) {
             firebase.initializeApp(firebaseConfig);
             // const analytics = getAnalytics(app);
             console.log('ket noi thanh cong');
-            // getDatabase();
+            console.log('name : ' + name.length);
+            getDatabase();
         }
     }, []);
     function addDatabase(id, name, email, password) {
-        firebase.database().ref('users/').push().set({
-            // push() sẽ bổ sung cho id
-            name: name,
-            email: email,
-            password: password
-        }, function (error) {
-            if (error) {
-                alert('loi nang');
-            } else {
-                alert('thanh cong');
+        // kiem tra tai khoan
+        var arrayErrors = {
+            name: '',
+            email: '',
+            password: '',
+            passwordCF: '',
+        };
+        if (name === '' || email === '' || password === '' || passwordCF === '') {
+            if (name === '') {
+                arrayErrors.name = '* cannot be left blank';
             }
-        })
+            if (email === '') {
+                arrayErrors.email = '* cannot be left blank';
+            }
+            if (password === '') {
+                arrayErrors.password = '* cannot be left blank';
+            }
+            if (passwordCF === '') {
+                arrayErrors.passwordCF = '* cannot be left blank';
+            }
+            setError(arrayErrors);
+        } else {
+            if (data == []) {  // nếu chưa có tài khoản thì lập tức add vào
+                firebase.database().ref('users/').push().set({
+                    // push() sẽ bổ sung cho id
+                    name: name,
+                    email: email,
+                    password: password,
+                }, function (error) {
+                    if (error) {
+                        alert('error '+error);
+                    } else {
+                        alert('success');
+                    }
+                });
+            } else {
+                if (password === passwordCF) {
+                    var trungEmail = false; // mặc định không trùng 
+                    for (let value of data) {
+                        if (value.email === email) {
+                            trungEmail = true; // trùng
+                            break;
+                        }
+                    }
+                    // kiểm tra xem có trùng tài khoản không 
+                    if (trungEmail == false) {
+                        firebase.database().ref('users/').push().set({
+                            // push() sẽ bổ sung cho id
+                            name: name,
+                            email: email,
+                            password: password,
+                        }, function (error) {
+                            if (error) {
+                                alert('error' + error);
+                            } else {
+                                alert('success');
+                                navigation.navigate('Home');
+                            }
+                        });
+                    } else {
+                        arrayErrors.email = '* this email already exists';
+                    }
+                } else {
+                    arrayErrors.password = '* password incorrect';
+                }
+                setError(arrayErrors);
+            }
+        }
     }
     // function updateDatabase(id, name, address) {
     //     firebase.database().ref('users/' + id).set({
@@ -62,34 +125,36 @@ export default function Register({ navigation }) {
     //     firebase.database().ref('users/' + id).remove();
     //     alert('xoa thanh cong');
     // }
-    // function getDatabase() {
-    //     firebase.database().ref('users/').on('value', function (snapshot) {
-    //         let array = [];
-    //         snapshot.forEach(function (item) {
-    //             var childData = item.val();
-    //             array.push({
-    //                 id: item.key,
-    //                 name: childData.Name,
-    //                 address: childData.address
-    //             });
-    //         });
-    //         setData(array);
-    //     });
-    // }
+    function getDatabase() {
+        firebase.database().ref('users/').on('value', function (snapshot) {
+            let array = [];
+            snapshot.forEach(function (item) {
+                var childData = item.val();
+                array.push({
+                    id: item.key,
+                    name: childData.Name,
+                    email: childData.email,
+                    password: childData.password
+                });
+            });
+            setData(array);
+        });
+    }
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
             <View style={styles.container}>
-                <StatusBar barStyle="dark-content"></StatusBar>
+                <StatusBar barStyle='dark-content'></StatusBar>
                 <View style={styles.boxLogin}>
                     <Text style={styles.Title}>Register</Text>
                     <>
                         <View style={styles.boxFrom}>
                             <View style={styles.groupText}>
-                                <Text style={styles.label}>Tên Hiển Thị</Text>
-                                <TextInput style={styles.textInput} placeholder='tên hiển thị tron App...'
-                                    onChangeText={(text) => setName(text)}
+                                <Text style={styles.label}>Name</Text>
+                                <TextInput style={styles.textInput} name='name' maxLength={40} placeholder='name...'
+                                    onChangeText={(text) => setName(text.trim())}
+                                    value={name}
                                 />
-                                <Text style={styles.textError}>* khong duoc dai hon 40 ky tu</Text>
+                                <Text style={styles.textError}>{error.name}</Text>
                             </View>
                         </View>
                     </>
@@ -97,40 +162,43 @@ export default function Register({ navigation }) {
                         <View style={styles.boxFrom}>
                             <View style={styles.groupText}>
                                 <Text style={styles.label}>Email</Text>
-                                <TextInput style={styles.textInput} placeholder='nhập email hoặc số điện thoại..'
-                                    onChangeText={(text) => setEmail(text)}
+                                <TextInput style={styles.textInput} name='email' placeholder='email...'
+                                    onChangeText={(text) => setEmail(text.trim())}
+                                    value={email}
                                 />
-                                <Text style={styles.textError}>* khong duoc dai hon 40 ky tu</Text>
+                                <Text style={styles.textError}>{error.email}</Text>
                             </View>
                         </View>
                     </>
                     <>
                         <View style={styles.boxFrom}>
                             <View style={styles.groupText}>
-                                <Text style={styles.label}>Mật Khẩu</Text>
-                                <TextInput style={styles.textInput} placeholder='nhập mật khẩu...'
-                                    onChangeText={(text) => setPassword(text)}
+                                <Text style={styles.label}>Password</Text>
+                                <TextInput style={styles.textInput} placeholder='password...'
+                                    onChangeText={(text) => setPassword(text.trim())}
+                                    value={password}
                                 />
-                                <Text style={styles.textError}>* khong duoc dai hon 40 ky tu</Text>
+                                <Text style={styles.textError}>{error.password}</Text>
                             </View>
                         </View>
                     </>
                     <>
                         <View style={styles.boxFrom}>
                             <View style={styles.groupText}>
-                                <Text style={styles.label}>Nhập Lại Mật Khẩu</Text>
-                                <TextInput style={styles.textInput} placeholder='xác nhận lại mật khẩu của bạn...'
-                                    onChangeText={(text) => setPasswordCF(text)}
+                                <Text style={styles.label}>Password Confirm</Text>
+                                <TextInput style={styles.textInput} placeholder='password confirm...'
+                                    onChangeText={(text) => setPasswordCF(text.trim())}
+                                    value={passwordCF}
                                 />
-                                <Text style={styles.textError}>* khong duoc dai hon 40 ky tu</Text>
+                                <Text style={styles.textError}>{error.password}</Text>
                             </View>
                         </View>
                     </>
                     <TouchableOpacity style={styles.buttonLogin} onPress={() =>
                         // console.log(name + ' ' + email + ' ' + password)}
-                        addDatabase('id',name, email, password)
+                        addDatabase('id', name, email, password)}
                     >
-                        <Text style={styles.textButton}>Đăng Ký</Text>
+                        <Text style={styles.textButton}>Register</Text>
                     </TouchableOpacity>
                     <View style={styles.Or}>
                         <Text style={styles.textOne}></Text>
@@ -147,8 +215,8 @@ export default function Register({ navigation }) {
                             <Text style={styles.textIconLink}>Gmail</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.register} onPress={() => navigation.goBack('Login')}>
-                        <Text style={styles.textRegister}>Bạn đã có tải khoản ? Đăng Nhập</Text>
+                    <TouchableOpacity style={styles.register} onPress={() => navigation.navigate('Login')}>
+                        <Text style={styles.textRegister}>Do you already have an account ? LogIn</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -179,7 +247,7 @@ const styles = StyleSheet.create({
     },
     boxFrom: {
         width: '100%',
-        marginTop: 15,
+        marginTop: 8,
     },
     label: {
         color: 'tomato',

@@ -11,7 +11,6 @@ import Message from './screens/Message';
 import Chat from './screens/Chat';
 import Login from './screens/Login';
 import Register from './screens/Register';
-import Loading from './screens/Loading';
 
 const ChatStack = createNativeStackNavigator();
 
@@ -21,9 +20,8 @@ export default function App() {
             <NavigationContainer>
                 <ChatStack.Navigator
                     screenOptions={{ headerShown: false }}
-                    initialRouteName="Loading"
+                    initialRouteName="Login"
                 >
-                    <ChatStack.Screen name="Loading" component={Loading} />
                     <ChatStack.Screen name="Login" component={Login} />
                     <ChatStack.Screen name="Register" component={Register} />
                     <ChatStack.Screen name="Home" component={Home} />

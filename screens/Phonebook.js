@@ -3,7 +3,6 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Statusbars from '../components/home/Statusbar';
-import Search from '../components/home/Search';
 import CircleInfoList from '../components/category/CircleInfoList';
 import BottomTab from '../components/BottomTab';
 import { Ionicons } from '@expo/vector-icons';

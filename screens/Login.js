@@ -10,6 +10,7 @@ import "firebase/storage";
 
 export default function Login({ navigation }) {
     const [visibleLoading, setVisibleLoading] = useState(['light-content', true]);
+    const [name,setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [data, setData] = useState([]);
@@ -39,34 +40,34 @@ export default function Login({ navigation }) {
             getDatabase();
         }
     }, []);
-    function addDatabase(id, name, address) {
-        firebase.database().ref('users/').push().set({
-            Name: name,
-            address: address
-        }, function (error) {
-            if (error) {
-                alert('loi nang');
-            } else {
-                alert('thanh cong');
-            }
-        })
-    }
-    function updateDatabase(id, name, address) {
-        firebase.database().ref('users/' + id).set({
-            Name: name,
-            address: address
-        }, function (error) {
-            if (error) {
-                alert('loi nang');
-            } else {
-                alert('thanh cong');
-            }
-        })
-    }
-    function deleteDatabase(id) {
-        firebase.database().ref('users/' + id).remove();
-        alert('xoa thanh cong');
-    }
+    // function addDatabase(id, name, address) {
+    //     firebase.database().ref('users/').push().set({
+    //         Name: name,
+    //         address: address
+    //     }, function (error) {
+    //         if (error) {
+    //             alert('loi nang');
+    //         } else {
+    //             alert('thanh cong');
+    //         }
+    //     })
+    // }
+    // function updateDatabase(id, name, address) {
+    //     firebase.database().ref('users/' + id).set({
+    //         Name: name,
+    //         address: address
+    //     }, function (error) {
+    //         if (error) {
+    //             alert('loi nang');
+    //         } else {
+    //             alert('thanh cong');
+    //         }
+    //     })
+    // }
+    // function deleteDatabase(id) {
+    //     firebase.database().ref('users/' + id).remove();
+    //     alert('xoa thanh cong');
+    // }
     function getDatabase() {
         firebase.database().ref('users/').on('value', function (snapshot) {
             let array = [];
@@ -100,12 +101,17 @@ export default function Login({ navigation }) {
                 var emailDatabase = false;  // kiểm tra tài khoản tồn tại không , mặc định không
                 for (let value of data) {
                     if (value.email == email && value.password == password) {
+                        setName(value.name);
                         emailDatabase = true;
                         break;
                     }
                 }
                 if (emailDatabase == true) {
-                    alert('login success');
+                    navigation.navigate('Home',{
+                        name: name,
+                        email: email,
+                        password: password,
+                    });
                 } else {
                     alert('login fail');
                 }
@@ -122,7 +128,7 @@ export default function Login({ navigation }) {
                     <Text style={styles.loadingText}>SKY TEAM</Text>
                     <ActivityIndicator size='large' color='white' />
                 </View>}
-                <StatusBar barStyle="dark-content"></StatusBar>
+                <StatusBar barStyle={visibleLoading[0]}></StatusBar>
                 <View style={styles.boxLogin}>
                     <Text style={styles.Title}>Log in</Text>
                     <>
